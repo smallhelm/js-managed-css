@@ -1,0 +1,29 @@
+{
+  "name": "js-managed-css",
+  "version": "1.0.0",
+  "description": "Define and insert CSS via javascript. This also generates unique class and id names automatically. Handy when doing virtual dom (or react) inline css as your primary styling.",
+  "main": "def-css-class.js",
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smallhelm/js-managed-css.git"
+  },
+  "keywords": [
+    "css",
+    "inline-styles",
+    "virtual-dom",
+    "h",
+    "react"
+  ],
+  "author": "smallhelm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smallhelm/js-managed-css/issues"
+  },
+  "homepage": "https://github.com/smallhelm/js-managed-css#readme",
+  "devDependencies": {
+    "tape": "^4.2.2"
+  }
+}
