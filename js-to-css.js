@@ -28,15 +28,17 @@ var renderRules = function(rules){
 };
 
 var keyToRule = function(context, key){
-  return map(key.split(","), function(p){
-    p = normalizeWhitespace(p);
+  return map(context.split(","), function(c){
+    return map(key.split(","), function(p){
+      p = normalizeWhitespace(p);
 
-    if(p[0] === ":"){
-      return context + p;
-    }else if(p[0] === "&"){
-      return context + p.substring(1);
-    }
-    return (context + " " + p).replace(/^\s+/, "");
+      if(p[0] === ":"){
+        return c + p;
+      }else if(p[0] === "&"){
+        return c + p.substring(1);
+      }
+      return (c + " " + p).replace(/^\s+/, "");
+    }).join(",");
   }).join(",");
 };
 
@@ -44,9 +46,8 @@ module.exports = function(json){
   var rules = {};
   var var_cache = {};
 
-  var cleanKey = function(key_orig){
-    var key = key_orig.replace(/\s+/, " ").replace(/^\s+/, "").replace(/\s+$/, "");
-    return replaceVars(key, function(v){
+  var cleanKey = function(key){
+    return replaceVars(normalizeWhitespace(key), function(v){
       if(!var_cache.hasOwnProperty(v)){
         var_cache[v] = gen();
       }

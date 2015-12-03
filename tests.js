@@ -74,5 +74,44 @@ test("js-to-css", function(t){
       two: "g6"
     }
   });
+  t.deepEquals(jsToCss({
+    ".$one, .$two": {
+      ":hover": {
+        "color": "green"
+      }
+    }
+  }), {
+    css: ".g7:hover,.g8:hover{color:green}",
+    vars: {
+      one: "g7",
+      two: "g8"
+    }
+  });
+  t.deepEquals(jsToCss({
+    "a,b,c,d": {
+      ":e,:f": {
+        "color": "green"
+      }
+    }
+  }), {
+    css: "a:e,a:f,b:e,b:f,c:e,c:f,d:e,d:f{color:green}",
+    vars: {}
+  });
+  t.deepEquals(jsToCss({
+    "a , b , c": {
+      ":e , :f": {
+        ".g, &.h": {
+          "color": "green"
+        }
+      }
+    }
+  }), {
+    css: "abc".split("").map(function(a){
+      return [":e .g", ":e.h", ":f .g", ":f.h"].map(function(b){
+        return a + b;
+      }).join(",");
+    }).join(",") + "{color:green}",
+    vars: {}
+  });
   t.end();
 });
