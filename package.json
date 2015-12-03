@@ -25,5 +25,8 @@
   "homepage": "https://github.com/smallhelm/js-managed-css#readme",
   "devDependencies": {
     "tape": "^4.2.2"
+  },
+  "dependencies": {
+    "gen-css-identifier": "^1.0.0"
   }
 }
