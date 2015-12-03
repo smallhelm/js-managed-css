@@ -25,7 +25,7 @@ test("js-to-css", function(t){
       ":hover": {
         "color": "red",
         "> .$two": {
-          "margin": "0 auto"
+          "margin": "   0    auto"
         }
       }
     },
@@ -41,6 +41,37 @@ test("js-to-css", function(t){
       one: "g1",
       two: "g2",
       three: "g3"
+    }
+  });
+
+  t.deepEquals(jsToCss({
+    ".$one": {
+      " color  ": " blue ",
+      ":hover, :active": {
+        "color": "red"
+      }
+    }
+  }), {
+    css: ".g4{color:blue}\n.g4:hover,.g4:active{color:red}",
+    vars: {
+      one: "g4"
+    }
+  });
+
+  t.deepEquals(jsToCss({
+    ".$one": {
+      ":hover, .$two": {
+        "color": "red"
+      },
+      "  :focus  ,   &.$two  ": {
+        "color": "green"
+      }
+    }
+  }), {
+    css: ".g5:hover,.g5 .g6{color:red}\n.g5:focus,.g5.g6{color:green}",
+    vars: {
+      one: "g5",
+      two: "g6"
     }
   });
   t.end();

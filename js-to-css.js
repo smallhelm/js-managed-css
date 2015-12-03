@@ -11,26 +11,33 @@ var map = function(obj, fn){
   return r;
 };
 
+var normalizeWhitespace = function(str){
+  return str.replace(/\s+/g, " ").replace(/^\s+/, "").replace(/\s+$/, "");
+};
+
 var renderProperties = function(properties){
   return map(properties, function(val, key){
-    return key + ":" + val;
+    return normalizeWhitespace(key) + ":" + normalizeWhitespace(val + "");
   }).join(";");
 };
 
 var renderRules = function(rules){
   return map(rules, function(val, key){
-    return key + "{" + renderProperties(val) + "}";
+    return normalizeWhitespace(key) + "{" + renderProperties(val) + "}";
   }).join("\n");
 };
 
-var keyToRule = function(context, key_orig){
-  var key = key_orig.replace(/\s+/, " ").replace(/^\s+/, "").replace(/\s+$/, "");
-  if(key[0] === ":"){
-    return context + key;
-  }else if(key[0] === "&"){
-    return context + key.substring(1);
-  }
-  return (context + " " + key).replace(/^\s+/, "");
+var keyToRule = function(context, key){
+  return map(key.split(","), function(p){
+    p = normalizeWhitespace(p);
+
+    if(p[0] === ":"){
+      return context + p;
+    }else if(p[0] === "&"){
+      return context + p.substring(1);
+    }
+    return (context + " " + p).replace(/^\s+/, "");
+  }).join(",");
 };
 
 module.exports = function(json){
