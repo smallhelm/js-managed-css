@@ -53,7 +53,7 @@ module.exports = function(json){
   var rules = {};
   var var_cache = {};
 
-  var cleanKey = function(key){
+  var normalizeAndApplyVars = function(key){
     return replaceVars(normalizeWhitespace(key), function(v){
       if(!var_cache.hasOwnProperty(v)){
         var_cache[v] = gen();
@@ -65,9 +65,9 @@ module.exports = function(json){
   var recurseRules = function(group, context, o){
     map(o, function(val, key){
       if(/^@/.test(key)){
-        recurseRules(keyToRule(context, cleanKey(key)), context, val);
+        recurseRules(keyToRule(context, normalizeAndApplyVars(key)), context, val);
       }else if(Object.prototype.toString.call(val) === "[object Object]"){
-        recurseRules(group, keyToRule(context, cleanKey(key)), val);
+        recurseRules(group, keyToRule(context, normalizeAndApplyVars(key)), val);
       }else{
         if(!rules.hasOwnProperty(group)){
           rules[group] = {};
@@ -75,7 +75,7 @@ module.exports = function(json){
         if(!rules[group].hasOwnProperty(context)){
           rules[group][context] = {};
         }
-        rules[group][context][key] = val;
+        rules[group][context][key] = normalizeAndApplyVars(val + "");
       }
     });
   };

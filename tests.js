@@ -126,5 +126,24 @@ test("js-to-css", function(t){
     css: "@keyframes demo-keyframes{from{left:10px}\nto{left:0}}",
     vars: {}
   });
+  t.deepEquals(jsToCss({
+    "@keyframes $one": {
+      "from": {
+        "left": "10px"
+      },
+      "to": {
+        "left": "0"
+      }
+    },
+    ".$two": {
+      "animation": "$one 2s linear infinite"
+    }
+  }), {
+    css: "@keyframes g9{from{left:10px}\nto{left:0}}\n.ga{animation:g9 2s linear infinite}",
+    vars: {
+      one: "g9",
+      two: "ga"
+    }
+  });
   t.end();
 });
