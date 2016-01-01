@@ -1,6 +1,6 @@
 {
   "name": "js-managed-css",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Define and insert CSS via javascript. This also generates unique class and id names automatically. Handy when using virtual-dom (or react) inline css as your primary styling.",
   "main": "index.js",
   "scripts": {
