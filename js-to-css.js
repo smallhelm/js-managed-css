@@ -22,8 +22,15 @@ var renderProperties = function(properties){
 };
 
 var renderRules = function(rules){
-  return map(rules, function(val, key){
-    return normalizeWhitespace(key) + "{" + renderProperties(val) + "}";
+  return map(rules, function(group_rules, group){
+
+    var group_css = map(group_rules, function(properties, key){
+      return normalizeWhitespace(key) + "{" + renderProperties(properties) + "}";
+    }).join("\n");
+
+    return group.length > 0
+      ? group + "{" + group_css + "}"
+      : group_css;
   }).join("\n");
 };
 
@@ -55,19 +62,24 @@ module.exports = function(json){
     });
   };
 
-  var recurseRules = function(context, o){
+  var recurseRules = function(group, context, o){
     map(o, function(val, key){
-      if(Object.prototype.toString.call(val) === "[object Object]"){
-        recurseRules(keyToRule(context, cleanKey(key)), val);
+      if(/^@/.test(key)){
+        recurseRules(keyToRule(context, cleanKey(key)), context, val);
+      }else if(Object.prototype.toString.call(val) === "[object Object]"){
+        recurseRules(group, keyToRule(context, cleanKey(key)), val);
       }else{
-        if(!rules.hasOwnProperty(context)){
-          rules[context] = {};
+        if(!rules.hasOwnProperty(group)){
+          rules[group] = {};
         }
-        rules[context][key] = val;
+        if(!rules[group].hasOwnProperty(context)){
+          rules[group][context] = {};
+        }
+        rules[group][context][key] = val;
       }
     });
   };
-  recurseRules("", json);
+  recurseRules("", "", json);
 
   return {
     css: renderRules(rules),

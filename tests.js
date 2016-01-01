@@ -113,5 +113,18 @@ test("js-to-css", function(t){
     }).join(",") + "{color:green}",
     vars: {}
   });
+  t.deepEquals(jsToCss({
+    "@keyframes demo-keyframes": {
+      "from": {
+        "left": "10px"
+      },
+      "to": {
+        "left": "0"
+      }
+    }
+  }), {
+    css: "@keyframes demo-keyframes{from{left:10px}\nto{left:0}}",
+    vars: {}
+  });
   t.end();
 });
