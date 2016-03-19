@@ -1,4 +1,8 @@
 # js-managed-css
+
+[![build status](https://secure.travis-ci.org/smallhelm/js-managed-css.svg)](https://travis-ci.org/smallhelm/js-managed-css)
+[![dependency status](https://david-dm.org/smallhelm/js-managed-css.svg)](https://david-dm.org/smallhelm/js-managed-css)
+
 Define and insert CSS via javascript. This also generates unique class and id names automatically. Handy when using virtual-dom (or react) inline css as your primary styling.
 
 ```js
