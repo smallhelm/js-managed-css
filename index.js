@@ -1,6 +1,10 @@
 var jsToCss = require("./js-to-css");
 var insertCss = require("insert-css");
 
+if(typeof document === "undefined"){
+  insertCss = function(){};
+}
+
 var css = "";
 var has_inserted_batch = false;
 setTimeout(function(){
